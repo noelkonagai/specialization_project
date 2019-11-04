@@ -30,7 +30,7 @@ deactivate
 
 ## Testing
 
-``test.py`` lets you pass in custom arguments to test certain parts of ``graph.py``.
+``test.py`` lets you pass in custom arguments to test certain parts of ``segment_conversations.py``.
 
 |flag|desc|required?|type|choices|used in|
 |-|-|-|-|-|-|
