@@ -34,10 +34,10 @@ deactivate
 
 |flag|desc|required?|type|choices|used in|
 |-|-|-|-|-|-|
-|-f|which function to run|yes|str|'vary_char', 'vary_time'|N/A|
-|-m|which regression model to run|yes|str|'all', 'lasso', 'decision_tree', 'ridge', 'svm', 'voting'|N/A|
-|-t|what time difference to use (mins)|no|multiple int|'vary_time'|create_graph, both, average_path, fb_average_path|
-|-l|what minimum character length to use|no|multiple int|N/A|'vary_char'|
+|-f|which function to run|yes|str|vary_char, vary_time|N/A|
+|-m|which regression model to run|yes|str|all, lasso, decision_tree, ridge, svm, voting|N/A|
+|-t|what time difference to use (mins)|no|multiple int|vary_time|N/A|
+|-l|what minimum character length to use|no|multiple int|N/A|vary_char|
 |-s|saving the output to numpy for further visualization|no|bool|N/A|both|
 
 So, for example if you want to run a voting regression on a dataframe where conversations were segmented by various message character lengths:
