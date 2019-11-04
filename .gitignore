@@ -1,0 +1,12 @@
+# Folders
+tableau/
+code/src/
+code/__pycache__
+code/.ipynb_checkpoints
+.vscode/
+data/raw/
+data/chkpt1/
+data/chkpt2/
+
+# Individual Files
+whatsapp-credentials.json
