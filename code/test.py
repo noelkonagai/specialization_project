@@ -5,13 +5,15 @@
 import argparse, os, glob, xgboost, shap
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from segment_conversations import segment_by_length, segment_by_time, response_count, regression_modeling
 from dateutil import parser
 from warnings import simplefilter
 
+
 def load_files():
-    os.chdir("../data/chkpt2/")
+    os.chdir("../data/chkpt2")
     filenames = [f for f in glob.glob("*.csv")]
     return filenames
 
@@ -29,14 +31,13 @@ def visualize(data, filepath):
     model = xgboost.train({"learning_rate": 0.01}, xgboost.DMatrix(X, label=y), 100)
 
     # explain the model's predictions using SHAP values
-    # (same syntax works for LightGBM, CatBoost, scikit-learn and spark models)
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(X)
 
     # summarize the effects of all the features
-    shap.summary_plot(shap_values, X)
+    shap.summary_plot(shap_values, X, show=False)
 
-    plt.savefig(filepath)
+    plt.savefig(filepath, dpi=1000, bbox_inches='tight', pad_inches=0.5)
 
 if __name__=="__main__":
     simplefilter(action='ignore', category=FutureWarning)
@@ -47,10 +48,12 @@ if __name__=="__main__":
     parser.add_argument('-t', type=int, help='maximum time difference to use (mins)', required=False, nargs='+')
     parser.add_argument('-l', type=int, help='minimum character length to use', required=False, nargs='+')
     parser.add_argument('-s', type=bool, help='outputs numpy file', required=False, default=False)
-    parser.add_argument('-v', '--visualization', type=bool, help='outputs visualization', required=False, default=False)
+    parser.add_argument('-v', type=bool, help='outputs visualization', required=False, default=False)
     args = parser.parse_args()
 
     print("\nRunning test: {}".format(args.f))
+
+    owd = os.getcwd()
 
     try:
 
@@ -62,17 +65,18 @@ if __name__=="__main__":
             measure = "time_length"
 
         for item in iterator:
+            os.chdir(owd)
             filenames = load_files()
             list_data = []
             for filename in filenames:
-                file_path = "../data/chkpt2/" + filename
+                file_path = filename
                 df = pd.read_csv(file_path)
                 if args.f == "vary_char":
                     df = segment_by_length(df, item)
-                    png_filepath = "../figures/shap_summary_vary_char_{}.png".format(str(item))
+                    png_filepath = "../../figures/shap_summary_vary_char_{}.png".format(str(item))
                 elif args.f == "vary_time":
                     df = segment_by_time(df, item)
-                    png_filepath = "../figures/shap_summary_vary_time_{}.png".format(str(item))
+                    png_filepath = "../../figures/shap_summary_vary_time_{}.png".format(str(item))
                 data = response_count(df)
                 for data_item in data.tolist():
                     list_data.append(data_item)
@@ -80,7 +84,7 @@ if __name__=="__main__":
             r2 = regression_modeling(np_data, args.m)
             print("{} regression \t {}: {} \t R^2: {} \t num_samples: {}".format(args.m, measure, item, r2, len(np_data)))
             if args.s == True:
-                np_filepath = "../data/numpy/chkpt2_" + args.f + "_" + str(item) + ".npy"
+                np_filepath = "../numpy/chkpt2_" + args.f + "_" + str(item) + ".npy"
                 np.save(np_filepath, np_data)
             if args.v == True:
                 visualize(np_data, png_filepath)
