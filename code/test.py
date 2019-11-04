@@ -37,7 +37,7 @@ def visualize(data, filepath):
     # summarize the effects of all the features
     shap.summary_plot(shap_values, X, show=False)
 
-    plt.savefig(filepath, dpi=1000, bbox_inches='tight', pad_inches=0.5)
+    plt.savefig(filepath, dpi=200, bbox_inches='tight', pad_inches=0.5)
 
 if __name__=="__main__":
     simplefilter(action='ignore', category=FutureWarning)
