@@ -1,6 +1,6 @@
 # Data Visualization
 
-# SHAP
+## SHAP
 Using SHAP, we are able to determine what columns have the biggest effect on our target variable of response rate. Inputing ``-v True`` as a flag yields visualizations saved in the figures folder.
 
 Take the following example where character cutoff number was 70. There are a number of observations to record here:

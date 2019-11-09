@@ -284,40 +284,8 @@ if __name__ == "__main__":
     input_path = "../data/data_chkpt2/"
     filenames = get_filenames(input_path)
 
-    char_cutoff_length = np.arange(60, 95, 2)
-    varying_char_length(char_cutoff_length)
-    # numpy_filepath = "../numpy_data/chkpt2_length_" + str(char_cutoff_length) + ".npy"
-
-    # plot_message_length(input_path, filenames)
-
-    # # Master list of all the data
-    # list_data = []
-
-    # print("Processing chkpt2 files")
-    # for filename in tqdm(filenames):
-    #     print("processing", filename)
-    #     file_path = input_path +  filename
-    #     df = pd.read_csv(file_path)
-
-    #     # df = segment_by_time(df, 180)
-    #     df = segment_by_length(df, char_cutoff_length)
-    #     # df.to_csv('test.csv')
-    #     data = response_count(df)
-    #     for item in data.tolist():
-    #         list_data.append(item)
-    # print("Processing complete")
-
-    # numpy_list_data = np.array(list_data)
-    # np.save(numpy_filepath, numpy_list_data)
-
-    # # numpy_list_data = np.load(numpy_filepath)
-
-    # regression_modeling(numpy_list_data)
-
     ''' TO DO!
-    - Be able to run tests with a varying time frame
     - Log regression R^2 values into a file
     - Include sentiment column of message + another column on emoji
     - Experiment with weekdays as their own columns (0/1)
-    - Different type of conversation model: message length > threshold
     '''
