@@ -11,7 +11,6 @@ from segment_conversations import segment_by_length, segment_by_time, response_c
 from dateutil import parser
 from warnings import simplefilter
 
-
 def load_files():
     os.chdir("../data/chkpt2")
     filenames = [f for f in glob.glob("*.csv")]

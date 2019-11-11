@@ -1,3 +1,7 @@
+# created by Noel Konagai, updated at 2019/11/09 10:46.
+# 
+# This code was written by Noel Konagai.
+
 import pandas as pd
 import numpy as np
 import os, time, glob
@@ -21,7 +25,7 @@ def translate_message(df, filename):
 
     print("Processing ", filename)
 
-    for i, message in tqdm(enumerate(df.messages_clean)):
+    for _, message in tqdm(enumerate(df.messages_clean)):
         # Catching any nan values
         if str(message) == "nan":
             language_col.append("")
@@ -48,6 +52,7 @@ def translate_message(df, filename):
 def get_filenames(path, extension):
     os.chdir(path)
     filenames = [f for f in glob.glob(extension)]
+    os.chdir("../")
     return filenames
 
 def read_csv(file_path):
@@ -58,8 +63,8 @@ if __name__ == "__main__":
     input_path = "../data/chkpt1/"
     output_path = "../data/chkpt2/"
     filenames = get_filenames(input_path, "*.csv")
-
     chkpt2_filenames = get_filenames(output_path, "*.csv")
+
 
     for filename in filenames:
         out_filename = filename[:-5] + "2.csv"

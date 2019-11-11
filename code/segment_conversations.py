@@ -79,16 +79,16 @@ def segment_by_length(df, min_length):
     
     return df
 
-def retrieve_conversation(conv_num):
-    '''
-    Function used to get messages with a given conversation ID
-    '''
-    conversation = list(df[df['conv_num'] == conv_num]['translated_message'])
+# def retrieve_conversation(df, conv_num):
+#     '''
+#     Function used to get messages with a given conversation ID
+#     '''
+#     conversation = list(df[df['conv_num'] == conv_num]['translated_message'])
     
-    for i in range(len(conversation)):
-        print(str(conversation[i]))
+#     for i in range(len(conversation)):
+#         print(str(conversation[i]))
     
-    return conversation
+#     return conversation
 
 def translate_message(message):
     # Creating a client
@@ -104,11 +104,11 @@ def translate_message(message):
     
     return message_translated, src_lng
 
-def get_sentiment(message):
-    analyzer = SentimentIntensityAnalyzer()
-    for sentence in sentences:
-        vs = analyzer.polarity_scores(sentence)
-        print("{:-<65} {}".format(sentence, str(vs)))
+# def get_sentiment(message):
+#     analyzer = SentimentIntensityAnalyzer()
+#     for sentence in sentences:
+#         vs = analyzer.polarity_scores(sentence)
+#         print("{:-<65} {}".format(sentence, str(vs)))
 
 def response_count(df):
     '''
