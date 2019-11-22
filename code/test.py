@@ -68,6 +68,7 @@ if __name__=="__main__":
             filenames = load_files()
             list_data = []
             for filename in filenames:
+                print(filename)
                 file_path = filename
                 df = pd.read_csv(file_path)
                 if args.f == "vary_char":

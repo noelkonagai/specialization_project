@@ -44,7 +44,7 @@ def convert_date(date_time):
     '''
     Converts date_time into machine readable timestamps
     '''
-    return parser.parse(date_time)
+    return parser.parse(date_time.strip('\t'))
 
 def demojize(text):
     '''
@@ -108,6 +108,9 @@ def main(filename):
     media_binary_series = [] #Binary encoding whether the message contains a media file
 
     for i in range(len(df.message)):
+        if i % 100 == 0:
+            print("Now doing {}th iteration.".format(i))
+
         if pd.isnull(df.message.iloc[i]) == False:
             msg = df.message.iloc[i]
             em_list = split_count(df.message.iloc[i])
@@ -141,6 +144,7 @@ def main(filename):
 def get_filenames(path, extension):
     os.chdir(path)
     filenames = [f for f in glob.glob(extension)]
+    os.chdir("..")
     return filenames
 
 if __name__ == "__main__":
@@ -158,16 +162,15 @@ if __name__ == "__main__":
 
     filenames = get_filenames(data_dir, "*.txt")
 
-    ''' Only execute it once
     print("Creating CSVs of the raw .txt files")
     for filename in tqdm(filenames):
         # Only create CSVs if it is not in the data directory
         csv_filename = filename[:-4] + ".csv"
-        if csv_filename not in get_filenames(data_dir):
+        if csv_filename not in get_filenames(data_dir, "*.csv"):
             create_csv(data_dir, filename[:-4])
-    '''
 
-    not_working = ['rosemary.txt', 'hindalga.txt', 'marihal.txt', 'chikabagawadi.txt', 'meghshala-mysore.txt', 'meghshala-belgaum-1.txt']
+    #not_working = ['rosemary.txt', 'hindalga.txt', 'marihal.txt', 'chikabagawadi.txt', 'meghshala-mysore.txt', 'meghshala-belgaum-1.txt']
+    not_working = []
     chkpt1_filenames = get_filenames(out_dir, "*.csv")
 
     print("Cleaning CSV files")

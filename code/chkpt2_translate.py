@@ -64,6 +64,8 @@ if __name__ == "__main__":
     output_path = "../data/chkpt2/"
     filenames = get_filenames(input_path, "*.csv")
     chkpt2_filenames = get_filenames(output_path, "*.csv")
+    
+    filenames.remove('suliya_chkpt1.csv') #Because it doesn't work
 
 
     for filename in filenames:
@@ -74,3 +76,5 @@ if __name__ == "__main__":
             df = read_csv(input_path + filename)
             df_translated = translate_message(df, filename)
             df_translated.to_csv(output_path + out_filename)
+
+    print("All files translated.")
