@@ -8,20 +8,15 @@ import matplotlib.pyplot as plt
 import datetime, re, os, glob
 
 from dateutil import parser
-from nltk.stem import WordNetLemmatizer 
 from tqdm import tqdm
 from google.cloud import translate
 
 from sklearn import preprocessing, linear_model, svm
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import r2_score
-from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, VotingRegressor
 from sklearn.linear_model import LinearRegression
-
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from nltk import tokenize
 
 import matplotlib.pyplot as plt
 from matplotlib import colors
@@ -270,7 +265,6 @@ def varying_char_length(char_lengths):
 
             # df = segment_by_time(df, 180)
             df = segment_by_length(df, length)
-            # df.to_csv('test.csv')
             data = response_count(df)
             for item in data.tolist():
                 list_data.append(item)
@@ -281,8 +275,10 @@ def varying_char_length(char_lengths):
         print("Char_length: {} \t r^2 val:{}".format(length, r2_val))
 
 if __name__ == "__main__":
-    input_path = "../data/data_chkpt2/"
+    input_path = "../data/data_chkpt3/"
     filenames = get_filenames(input_path)
+
+    varying_char_length([80, 82, 84, 86, 88, 90])
 
     ''' TO DO!
     - Log regression R^2 values into a file

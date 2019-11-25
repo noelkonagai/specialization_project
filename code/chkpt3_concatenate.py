@@ -69,11 +69,6 @@ def categorize_groups(df):
     df.insert(1, 'group_type', group_type)
 
     return df
-
-def master_df_cols():
-    #TODO Extract an encoding for all participants
-    #TODO Create a column indicating which conversation they are from
-    pass  
     
 if __name__ == "__main__":
     #TODO Read one by one chkpt2 CSV files
