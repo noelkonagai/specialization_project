@@ -58,13 +58,13 @@ def segment_by_length(df, min_length):
     for i in range(len(df)):
         message = df.message.iloc[i]
 
+        if message == "<Media omitted>":
+            message_length = 0
         # Only increase conversation ID when message is longer than min_length
-        if message != "<Media omitted>":
+        else:
             message_length = len(message)
             if len(message) > min_length:
                 j += 1
-        else:
-            message_length = 0
 
         conv_num.append(j)
         message_lengths.append(message_length)
@@ -123,7 +123,8 @@ def response_count(df):
         message_count = len(conv_df) # Number of messages in the given conversation
         participant_num = len(conv_df.author.value_counts()) # Number of participants in the given conversation
         response = (participant_num - 1)/total_participants # Ratio of those who participated in the conversation to the total group size
-        
+        # group_type = conv_df.group_type.iloc[0]
+
         url = conv_df.url.iloc[0]
         if len(url) > 2:
             has_url = 1
@@ -150,7 +151,6 @@ def response_count(df):
         
         data[i][0] = message_count
         data[i][1] = 0
-        # data[i][1] = participant_num
         data[i][2] = has_media 
         data[i][3] = has_url
         data[i][4] = has_emoji
@@ -164,6 +164,7 @@ def response_count(df):
 def get_filenames(path):
     os.chdir(path)
     filenames = [f for f in glob.glob("*.csv")]
+    os.chdir("..")
     return filenames
 
 def concatenate_data(list_data):
@@ -187,7 +188,7 @@ def regression_modeling(data, model):
     models = [  ['linear', linear_model.Lasso(alpha=0.1).fit(X_train, y_train)],
                 ['decision_tree' , DecisionTreeRegressor(random_state=0).fit(X_train, y_train)],
                 ['ridge', linear_model.Ridge(alpha=.5).fit(X_train, y_train)],
-                ['svm', svm.SVR(kernel='rbf').fit(X_train, y_train)]]
+                ['svm', svm.SVR(kernel='rbf', gamma='auto').fit(X_train, y_train)]]
 
     if model == 'all':
         for m in models:
@@ -257,25 +258,28 @@ def varying_char_length(char_lengths):
 
     list_data = []
 
+    # Loop over character length input
     for length in char_lengths:
-        numpy_filepath = "../numpy_data/chkpt2_length_" + str(length) + ".npy"
         for filename in filenames:
             file_path = input_path +  filename
             df = pd.read_csv(file_path)
-
-            # df = segment_by_time(df, 180)
             df = segment_by_length(df, length)
             data = response_count(df)
             for item in data.tolist():
-                list_data.append(item)
+                list_data.append(item) 
 
+        # Save this dataset into a dataframe
+        filepath = "../data/conversation/length/" + str(length) + ".csv"
         numpy_list_data = np.array(list_data)
-        np.save(numpy_filepath, numpy_list_data)
+        columns = ["message_count", "group_type", "has_media", "has_url", "has_emoji", "message_length", "hour", "day", "response_rate"]
+        df_output = pd.DataFrame(data = numpy_list_data, index = None, columns = columns)
+        df_output.to_csv(filepath)
+
         r2_val = regression_modeling(numpy_list_data, 'voting')
         print("Char_length: {} \t r^2 val:{}".format(length, r2_val))
 
 if __name__ == "__main__":
-    input_path = "../data/data_chkpt3/"
+    input_path = "../data/chkpt3/"
     filenames = get_filenames(input_path)
 
     varying_char_length([80, 82, 84, 86, 88, 90])
