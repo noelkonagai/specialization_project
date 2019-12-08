@@ -30,19 +30,24 @@ deactivate
 
 ## Testing
 
-``test.py`` lets you pass in custom arguments to test certain parts of ``segment_conversations.py``.
+``analyze.py`` lets you pass in custom arguments to test certain parts of ``chkpt3_analysis.py``.
 
-|flag|desc|required?|type|choices|used in|
-|-|-|-|-|-|-|
-|-f|which function to run|yes|str|vary_char, vary_time|N/A|
-|-m|which regression model to run|yes|str|all, lasso, decision_tree, ridge, svm, voting|N/A|
-|-t|what time difference to use (mins)|no|multiple int|vary_time|N/A|
-|-l|what minimum character length to use|no|multiple int|N/A|vary_char|
-|-s|saving the output to numpy for further visualization|no|bool|N/A|both|
+|flag   |desc                                                |required? |type           |choices                |used in    |
+|-      |-                                                   |-         |-              |-                      |-          |
+|-f     |which function to run                               |no        |str            |vary_char, vary_time   |N/A        |
+|-t     |what time difference to use (mins)                  |no        |multiple int   |N/A                    |vary_time  |
+|-c     |what minimum character length to use                |no        |multiple int   |N/A                    |vary_char  |
+|-r     |regression to run on all groups together or separate|no        |str            |all, separate          |N/A        |
+|-d     |what data type to use                               |no        |str            |vary_char, vary_time   |N/A        |
 
-So, for example if you want to run a voting regression on a dataframe where conversations were segmented by various message character lengths:
+So, for example if you want to dissect the dataframe with specific character cutoffs:
 
 ```bash
-python test.py -f vary_char -m voting -l 70 75 80 85 90
+python analyze.py -f vary_char -c 60 70 80
 ```
 
+These create individual CSV files either under ``data/chkpt3/conversation/time`` or ``~/char``. Once you have created the CSV files, you can run a regression to see how well the model predicts response rates. To do so:
+
+```bash
+python analyze.py -r separate -d vary_char
+```
