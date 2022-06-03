@@ -1,7 +1,7 @@
 arrow==0.10.0
 beautifulsoup4==4.5.3
 binaryornot==0.4.0
-bottle==0.12.17
+bottle==0.12.20
 bottle-sqlalchemy==0.4.3
 chardet==2.3.0
 click==6.7
